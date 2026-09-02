@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — RILOC</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* =========================================================
+   RILOC Contact Page — Self-Contained Live Design
+   ========================================================= */
+:root{
+  --blue-900:#0F3D63;
+  --blue-700:#155689;
+  --orange-500:#E8833A;
+  --green-600:#2E9E6D;
+  --ink:#1a1a1a;
+  --ink-soft:#4a5568;
+  --gray-50:#f8f9fa;
+  --gray-100:#eef2f6;
+  --gray-200:#e2e8ee;
+  --white:#ffffff;
+  --radius:14px;
+  --radius-lg:24px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink);line-height:1.6;background:var(--white);
+  overflow-x:hidden;
+}
+
+/* ---------- Live Particle Canvas ---------- */
+#particle-canvas{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+}
+
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative;padding:160px 24px 100px;
+  background:linear-gradient(135deg,var(--blue-900) 0%,#0a2a45 50%,#0d3a52 100%);
+  color:#fff;overflow:hidden;text-align:center;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 20% 50%,rgba(232,131,58,.15),transparent 50%),
+             radial-gradient(circle at 80% 80%,rgba(46,158,109,.12),transparent 50%);
+  pointer-events:none;
+}
+.hero-content{position:relative;z-index:2;max-width:640px;margin:0 auto}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange-500);margin-bottom:16px;
+}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--orange-500);border-radius:2px}
+
+.hero h1{
+  font-size:clamp(2rem,5vw,3.4rem);font-weight:800;line-height:1.1;
+  color:#fff;margin-bottom:16px;min-height:1.2em;
+}
+.hero p{color:rgba(255,255,255,.82);font-size:1.1rem;max-width:520px;margin:0 auto}
+
+/* Cursor blink for typing effect */
+.typing-cursor::after{
+  content:"|";animation:blink 1s step-end infinite;color:var(--orange-500);
+}
+@keyframes blink{50%{opacity:0}}
+
+/* Floating orbs */
+.orb{
+  position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;pointer-events:none;
+}
+.orb-1{width:300px;height:300px;background:var(--orange-500);top:-80px;left:-60px;animation:floatOrb 8s ease-in-out infinite}
+.orb-2{width:240px;height:240px;background:var(--green-600);bottom:-40px;right:-40px;animation:floatOrb 10s ease-in-out infinite 2s}
+.orb-3{width:180px;height:180px;background:var(--blue-700);top:40%;right:15%;animation:floatOrb 12s ease-in-out infinite 4s}
+@keyframes floatOrb{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-30px) scale(1.05)}
+  66%{transform:translate(-20px,20px) scale(.95)}
+}
+
+/* ---------- Contact Cards ---------- */
+.contact-section{padding:90px 24px;background:var(--gray-50)}
+.container{max-width:1100px;margin:0 auto}
+.section-head{text-align:center;margin-bottom:56px}
+.section-head h2{font-size:clamp(1.6rem,3vw,2.2rem);color:var(--blue-900);margin-bottom:10px}
+.section-head p{color:var(--ink-soft);max-width:520px;margin:0 auto}
+
+.cards-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;
+}
+.contact-card{
+  background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);
+  padding:36px 28px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(15,61,99,.06);
+  transition:transform .4s ease,box-shadow .4s ease;
+  opacity:0;transform:translateY(40px);
+}
+.contact-card.visible{opacity:1;transform:translateY(0)}
+.contact-card:hover{
+  transform:translateY(-8px);box-shadow:0 20px 50px rgba(15,61,99,.12);
+  border-color:rgba(232,131,58,.3);
+}
+.contact-card::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:50px;height:3px;background:linear-gradient(90deg,var(--orange-500),var(--green-600));
+  border-radius:0 0 4px 4px;
+}
+.card-icon{
+  width:56px;height:56px;border-radius:16px;margin:0 auto 18px;
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+  background:linear-gradient(135deg,var(--blue-100),var(--gray-100));
+  transition:transform .3s;
+}
+.contact-card:hover .card-icon{transform:scale(1.1) rotate(-5deg)}
+.card-icon.phone{background:linear-gradient(135deg,#e4f5ee,#d4ede3)}
+.card-icon.email{background:linear-gradient(135deg,#fcebdd,#f5d9c3)}
+.card-icon.location{background:linear-gradient(135deg,#e9f2fa,#d5e5f3)}
+.card-icon.reg{background:linear-gradient(135deg,#f0e4f5,#e5d4ed)}
+.contact-card h4{font-size:1.05rem;margin-bottom:6px;color:var(--blue-900)}
+.contact-card p{font-size:.9rem;color:var(--ink-soft)}
+
+/* Pulse dot for "live" feel */
+.pulse-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--green-600);
+  position:absolute;top:16px;right:16px;
+}
+.pulse-dot::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  background:var(--green-600);opacity:.4;animation:pulseRing 2s ease-out infinite;
+}
+@keyframes pulseRing{
+  0%{transform:scale(1);opacity:.4}
+  100%{transform:scale(2.8);opacity:0}
+}
+
+/* ---------- Form Section ---------- */
+.form-section{padding:90px 24px;background:var(--white)}
+.split-form{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:start;
+}
+.form-info h2{font-size:clamp(1.6rem,3vw,2.2rem);color:var(--blue-900);margin-bottom:16px}
+.form-info p{color:var(--ink-soft);margin-bottom:32px}
+
+.live-indicator{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--gray-50);border:1px solid var(--gray-200);
+  padding:10px 18px;border-radius:999px;font-size:.85rem;font-weight:600;color:var(--green-600);
+  margin-bottom:28px;
+}
+.live-indicator span{
+  width:8px;height:8px;border-radius:50%;background:var(--green-600);
+  box-shadow:0 0 0 4px rgba(46,158,109,.25);
+  animation:livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.6;transform:scale(.85)}
+}
+
+.form-card{
+  background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);
+  padding:40px;box-shadow:0 8px 32px rgba(15,61,99,.08);
+  position:relative;overflow:hidden;
+}
+.form-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--orange-500),var(--green-600),var(--blue-700));
+}
+
+.form-group{margin-bottom:22px;position:relative}
+.form-group label{
+  display:block;font-size:.82rem;font-weight:700;color:var(--blue-900);
+  margin-bottom:8px;letter-spacing:.02em;
+}
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:12px;
+  font-size:.95rem;font-family:inherit;color:var(--ink);
+  background:var(--gray-50);transition:.25s;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+  outline:none;border-color:var(--orange-500);background:var(--white);
+  box-shadow:0 0 0 4px rgba(232,131,58,.12);
+}
+.form-group textarea{resize:vertical;min-height:120px}
+
+/* Animated input border on focus */
+.form-group::after{
+  content:"";position:absolute;bottom:0;left:50%;width:0;height:2px;
+  background:linear-gradient(90deg,var(--orange-500),var(--green-600));
+  transition:width .3s ease,left .3s ease;border-radius:2px;
+}
+.form-group:focus-within::after{width:100%;left:0}
+
+.submit-btn{
+  width:100%;padding:16px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,var(--orange-500),#d6702a);
+  color:#fff;font-size:1rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(232,131,58,.35)}
+.submit-btn:active{transform:translateY(0)}
+.submit-btn.sending{pointer-events:none;opacity:.85}
+.submit-btn .spinner{
+  width:18px;height:18px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;display:none;
+}
+.submit-btn.sending .spinner{display:block}
+.submit-btn.sending .btn-text{display:none}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Success overlay */
+.success-overlay{
+  position:absolute;inset:0;background:rgba(255,255,255,.97);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px;z-index:10;
+}
+.success-overlay.show{display:flex;animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+
+.success-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green-600),#1d7350);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:2rem;margin-bottom:20px;
+  animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) .2s both;
+}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.5)}
+  to{opacity:1;transform:scale(1)}
+}
+.success-overlay h3{color:var(--blue-900);margin-bottom:8px;font-size:1.3rem}
+.success-overlay p{color:var(--ink-soft);font-size:.95rem;max-width:320px}
+
+/* ---------- Footer ---------- */
+.footer{
+  background:var(--blue-900);color:rgba(255,255,255,.7);padding:48px 24px 24px;font-size:.9rem;
+  text-align:center;
+}
+.footer p{margin-bottom:6px}
+.footer strong{color:#fff}
+
+/* ---------- Responsive ---------- */
+@media(max-width:900px){
+  .split-form{grid-template-columns:1fr}
+  .form-info{margin-bottom:40px}
+}
+@media(max-width:768px){
+  .nav-links{
+    position:fixed;top:72px;right:-100%;width:260px;height:calc(100vh - 72px);
+    background:var(--white);border-left:1px solid var(--gray-200);
+    flex-direction:column;align-items:flex-start;padding:24px;gap:6px;
+    transition:right .3s ease;box-shadow:0 20px 50px rgba(15,61,99,.12);
+  }
+  .nav-links.open{right:0}
+  .nav-links a{width:100%}
+  .nav-toggle{display:block}
+  .hero{padding:140px 24px 80px}
+  .contact-section,.form-section{padding:64px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- Live Particle Background -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- Navigation -->
+<nav class="nav" aria-label="Primary">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <img src="images/riloc-logo.png" alt="RILOC">
+      RILOC
+    </a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html" class="btn-donate">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-content">
+    <span class="eyebrow">Get In Touch</span>
+    <h1 class="typing-cursor" id="heroTitle">Contact RILOC</h1>
+    <p>We welcome partnerships, inquiries, and conversations. Reach out and our team will respond promptly.</p>
+  </div>
+</header>
+
+<!-- Contact Cards -->
+<section class="contact-section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Reach Us Directly</h2>
+      <p>Multiple ways to connect with the Refugee &amp; Immigrant-Led Organizations Coalition.</p>
+    </div>
+    <div class="cards-grid">
+      <div class="contact-card" data-animate>
+        <div class="pulse-dot"></div>
+        <div class="card-icon location">📍</div>
+        <h4>Visit Us</h4>
+        <p>2251 Copperstone Dr. Apt. 3B<br>High Point, NC 27265</p>
+      </div>
+      <div class="contact-card" data-animate style="transition-delay:.1s">
+        <div class="card-icon phone">📞</div>
+        <h4>Call Us</h4>
+        <p>+1 (336) 486-7133<br>Mon–Fri, 9:00 AM – 5:30 PM</p>
+      </div>
+      <div class="contact-card" data-animate style="transition-delay:.2s">
+        <div class="card-icon email">✉️</div>
+        <h4>Email Us</h4>
+        <p>hello@riloc.org<br>partnerships@riloc.org</p>
+      </div>
+      <div class="contact-card" data-animate style="transition-delay:.3s">
+        <div class="card-icon reg">📝</div>
+        <h4>Registration</h4>
+        <p>NC Reg: C202619401248-1<br>EIN: 42-4249081</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Form Section -->
+<section class="form-section">
+  <div class="container">
+    <div class="split-form">
+      <div class="form-info" data-animate>
+        <div class="live-indicator"><span></span> We are currently online</div>
+        <h2>Send Your Bio Data</h2>
+        <p>Fill in your information below and it will be sent directly to our team via WhatsApp for immediate follow-up. We typically respond within one business day.</p>
+        
+        <div style="margin-top:32px;padding:24px;background:var(--gray-50);border-radius:var(--radius);border:1px solid var(--gray-200)">
+          <h4 style="color:var(--blue-900);margin-bottom:10px;font-size:1rem">What happens next?</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;color:var(--ink-soft);font-size:.9rem">
+            <li>1️⃣ Your details are formatted and sent via WhatsApp</li>
+            <li>2️⃣ Our team receives an instant notification</li>
+            <li>3️⃣ We review and respond within 24 hours</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-card" data-animate style="transition-delay:.15s">
+        <!-- Success Overlay -->
+        <div class="success-overlay" id="successOverlay">
+          <div class="success-icon">✓</div>
+          <h3>Message Sent!</h3>
+          <p>Your information has been forwarded to our team via WhatsApp. We will be in touch shortly.</p>
+          <button onclick="resetForm()" class="submit-btn" style="margin-top:24px;max-width:200px">Send Another</button>
+        </div>
+
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" name="fullName" required placeholder="Your full name">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="+1 (336) 000-0000">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="organization">Organization (Optional)</label>
+            <input type="text" id="organization" name="organization" placeholder="Your organization or affiliation">
+          </div>
+
+          <div class="form-group">
+            <label for="interest">Area of Interest</label>
+            <select id="interest" name="interest">
+              <option>General Inquiry</option>
+              <option>Partnership Opportunity</option>
+              <option>Volunteering</option>
+              <option>Funding / Donation</option>
+              <option>Media / Press</option>
+              <option>Program Information</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Your Message / Bio *</label>
+            <textarea id="message" name="message" required placeholder="Tell us about yourself, your background, or how you'd like to get involved..."></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span class="spinner"></span>
+            <span class="btn-text">Submit via WhatsApp →</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="reveal">
+        <h4>RILOC</h4>
+        <p style="max-width:320px">Refugee &amp; Immigrant-Led Organizations Coalition. Building thriving communities through empowerment, advocacy, and sustainable development.</p>
+        <div class="social-icons">
+          <a href="https://facebook.com" target="_blank" class="social-icon" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <a href="https://twitter.com" target="_blank" class="social-icon" aria-label="Twitter">
+            <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" class="social-icon" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+          <a href="https://linkedin.com" target="_blank" class="social-icon" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://youtube.com" target="_blank" class="social-icon" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 001.94-2A29 29 0 0023 12a29 29 0 00-.46-5.58z" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <h4>Contact</h4>
+        <ul>
+          <li>2251 Copperstone Dr. Apt. 3B, High Point, NC 27265</li>
+          <li>+1 (336) 486-7133</li>
+          <li>Reg: C202619401248-1 | EIN: 42-4249081</li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <h4>Find Us</h4>
+        <div class="map-container">
+          <iframe src="https://maps.google.com/maps?q=2251+Copperstone+Dr,+High+Point,+NC+27265&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="RILOC Location"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 RILOC. All rights reserved.</span>
+      <span>Founded in North Carolina, USA</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating Buttons -->
+<a href="https://wa.me/13364867133" class="float-btn float-whatsapp" target="_blank" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+</a>
+<button class="float-btn float-donate" data-open-donate aria-label="Donate Now" title="Donate Now">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+</button>
+
+<!-- Donate Modal -->
+<div class="modal-overlay" id="donateModal" role="dialog" aria-modal="true" aria-label="Support RILOC">
+  <div class="modal">
+    <button class="modal-close" data-close-donate aria-label="Close">✕</button>
+    <h3>Support RILOC</h3>
+    <p>Your contribution helps strengthen refugee and immigrant-led organizations across communities. Fill in your details below and we will guide you through the donation process.</p>
+
+    <form class="donate-form" id="donateForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="d-name">Full Name</label>
+          <input type="text" id="d-name" name="name" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="d-email">Email Address</label>
+          <input type="email" id="d-email" name="email" placeholder="john@example.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="d-phone">Phone Number</label>
+          <input type="tel" id="d-phone" name="phone" placeholder="+1 (336) 000-0000">
+        </div>
+        <div class="form-group">
+          <label for="d-currency">Currency</label>
+          <select id="d-currency" name="currency">
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="d-amount">Donation Amount</label>
+        <input type="number" id="d-amount" name="amount" placeholder="e.g. 100" min="1" required>
+      </div>
+      <div class="form-group">
+        <label for="d-message">Message (Optional)</label>
+        <textarea id="d-message" name="message" placeholder="Why are you donating? Any specific program you want to support?"></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send Donation Request via WhatsApp</button>
+      <p class="form-note">By submitting, a WhatsApp message will be sent to RILOC with your details. Our team will follow up with secure payment instructions.</p>
+    </form>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+
+<script>
+/* =========================================================
+   Inline JavaScript — Live Animations & WhatsApp Logic
+   ========================================================= */
+
+/* ---------- Particle Network Canvas ---------- */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = window.innerWidth < 768 ? 35 : 65;
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle{
+  constructor(){
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - .5) * .5;
+    this.vy = (Math.random() - .5) * .5;
+    this.size = Math.random() * 2 + 1;
+  }
+  update(){
+    this.x += this.vx;
+    this.y += this.vy;
+    if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(232,131,58,.35)';
+    ctx.fill();
+  }
+}
+
+for(let i=0;i<PARTICLE_COUNT;i++) particles.push(new Particle());
+
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.update();p.draw();
+  });
+  // Draw connections
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 140){
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(21,86,137,${.12 * (1 - dist/140)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+/* ---------- Typing Effect ---------- */
+const titleEl = document.getElementById('heroTitle');
+const titleText = "Contact RILOC";
+let charIndex = 0;
+titleEl.textContent = "";
+function typeWriter(){
+  if(charIndex < titleText.length){
+    titleEl.textContent = titleText.substring(0, charIndex + 1);
+    charIndex++;
+    setTimeout(typeWriter, 100);
+  }
+}
+setTimeout(typeWriter, 600);
+
+/* ---------- Scroll Reveal ---------- */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.15});
+
+document.querySelectorAll('[data-animate]').forEach(el=>observer.observe(el));
+
+/* ---------- Mobile Nav ---------- */
+function toggleNav(){
+  const links = document.getElementById('navLinks');
+  const btn = document.querySelector('.nav-toggle');
+  links.classList.toggle('open');
+  btn.setAttribute('aria-expanded', links.classList.contains('open'));
+}
+
+/* ---------- WhatsApp Form Submission ---------- */
+function handleSubmit(e){
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const overlay = document.getElementById('successOverlay');
+  
+  // Gather data
+  const name = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const org = document.getElementById('organization').value.trim() || 'N/A';
+  const interest = document.getElementById('interest').value;
+  const message = document.getElementById('message').value.trim();
+  
+  // Build WhatsApp message
+  const text = 
+`*New RILOC Contact Submission*%0A%0A` +
+`👤 *Name:* ${name}%0A` +
+`📧 *Email:* ${email}%0A` +
+`📞 *Phone:* ${phone}%0A` +
+`🏢 *Organization:* ${org}%0A` +
+`📋 *Interest:* ${interest}%0A%0A` +
+`📝 *Message:*%0A${message}%0A%0A` +
+`— Sent from RILOC Contact Page`;
+
+  // Show sending state
+  btn.classList.add('sending');
+  
+  // Simulate brief processing then open WhatsApp
+  setTimeout(()=>{
+    const whatsappURL = `https://wa.me/13364867133?text=${text}`;
+    window.open(whatsappURL, '_blank');
+    
+    // Show success
+    btn.classList.remove('sending');
+    overlay.classList.add('show');
+  }, 1200);
+}
+
+function resetForm(){
+  document.getElementById('contactForm').reset();
+  document.getElementById('successOverlay').classList.remove('show');
+  document.getElementById('heroTitle').textContent = '';
+  charIndex = 0;
+  typeWriter();
+}
+
+
+</script>
+
+</body>
+</html>
